@@ -2,7 +2,7 @@ package VFSsimple::Base;
 
 use strict;
 use warnings;
-use File::Temp;
+use File::Temp qw(tempfile);
 use IO::File;
 use base qw(VFSsimple);
 
@@ -143,11 +143,11 @@ generating a temporary file and using drv_copy() to fetch it.
 
 sub drv_get {
     my ($self, $src) = @_;
-    my (undef, $dest) = tempfile(UNLINK => 0);
+    my (undef, $dest) = File::Temp::tempfile(UNLINK => 0);
     return $self->drv_copy($src, $dest);
 }
 
-=head1 drv_open($src)
+=head2 drv_open($src)
 
 Should return a B<read only> file handle for relative path $src.
 
@@ -161,6 +161,18 @@ sub drv_open {
     my $dest = $self->drv_get($src) or return;
     CORE::open(my $tmpfile, '<', $dest) or return;
     return $tmpfile;
+}
+
+=head2 drv_exists($file)
+
+Should true if $file exists
+
+=cut
+
+sub drv_exists {
+    my ($self, $file) = @_;
+    $self->set_error("no drv_exists support");
+    return;
 }
 
 1;

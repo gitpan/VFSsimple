@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use URI;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 =head1 NAME
 
@@ -147,6 +147,17 @@ Copy $src file from vfs into $dest local file
 sub copy {
     my ($self, $src, $dest) = @_;
     return $self->drv_copy($src, $dest);
+}
+
+=head2 exists($file)
+
+Return True if $file exists on the VFS
+
+=cut
+
+sub exists {
+    my ($self, $file) = @_;
+    return $self->drv_exists($file);
 }
 
 1;
